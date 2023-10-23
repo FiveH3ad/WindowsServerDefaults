@@ -133,6 +133,7 @@ try {
     Write-Log -Message 'Successfully removed NTUSER.DAT files from all user profiles' -Level 'Information'
 
     # Get all logged on users
+    Write-Log -Message 'Getting all users' -Level 'Information'
     $users = query user 2>&1
 
     # Array to store session names (usually usernames for local sessions)
@@ -142,29 +143,34 @@ try {
       $sessionName = $user.Split(" ") -replace '>',''
       $sessionNames += $sessionName[0]
     }
-
+    Write-Log -Message 'Sending all users a Notification' -Level 'Information'
     # Notify users
     $message = "You will be logged off in 1 minute. The Server is getting default Windows Server Settings."
     $sessionNames | ForEach-Object {
-        Write-Output ("Sending notification to user '{0}'." -f $_)
+        Write-Log -Message ("Sending notification to user '{0}'." -f $_) -Level 'Information'
         msg $_ $message
     }
+    Write-Log -Message 'Sent all users a Notification' -Level 'Information'
 
+    Write-Log -Message 'Waiting one Minute' -Level 'Information'
     # Wait for 1 minute
     Start-Sleep -Seconds 60
-
+    Write-Log -Message 'Waited one Minute' -Level 'Information'
+    
     $i = 0
     # Log off users
+    Write-Log -Message 'Logging of all users' -Level 'Information'
     while ($i -ne 15) {
       logoff $i > $null 2>&1
       $i++
     }
+    Write-Log -Message 'Logged of all users' -Level 'Information'
     
     # Create the DefaultSettings registry key.
     Write-Log -Message 'Creating DefaultSettings registry key' -Level 'Information'
     New-Item -Path 'HKLM:\Software\DefaultSettings' -Force
     Write-Log -Message 'Successfully created DefaultSettings registry key' -Level 'Information'
-    shutdown -r -t 60
+    shutdown -r -t 5
   }
 }
 catch {
