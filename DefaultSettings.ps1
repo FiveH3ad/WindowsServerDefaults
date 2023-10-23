@@ -1,15 +1,15 @@
 [CmdletBinding()]
 param (
     [Parameter(Mandatory=$false)]
-    [TypeName('System.String')]
+    [System.String]
     $snmp_community_string = {2} ,
 
     [Parameter(Mandatory=$false)]
-    [TypeName('System.object')]
+    [System.Object]
     $snmp_allowed_hosts = {3} ,
 
     [Parameter(Mandatory=$false)]
-    [TypeName('System.Boolean')]
+    [System.Boolean]
     $snmp_configuration_enabled = {1}
 )
 
