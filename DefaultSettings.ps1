@@ -121,6 +121,8 @@ try {
     Write-Log -Message 'Deleting XML file' -Level 'Information'
     Remove-Item -LiteralPath $xmlFileFilePath -Force
     Write-Log -Message 'Successfully deleted XML file' -Level 'Information'
+    # Log off all users
+    
     # Remove the NTUSER.DAT file from all user profiles.
     Write-Log -Message 'Removing NTUSER.DAT files from all user profiles' -Level 'Information'
     $ntuserDatFiles = Join-Path -Path $env:SystemDrive -ChildPath 'Users\*\NTUSER.DAT'
@@ -130,12 +132,40 @@ try {
     }
     Write-Log -Message 'Successfully removed NTUSER.DAT files from all user profiles' -Level 'Information'
 
+    # Get all logged on users
+    $users = query user 2>&1
+
+    # Array to store session names (usually usernames for local sessions)
+    $sessionNames = @()
+    
+    Foreach($user in ($users | select -skip 1)){
+      $sessionName = $user.Split(" ") -replace '>',''
+      $sessionNames += $sessionName[0]
+    }
+
+    # Notify users
+    $message = "You will be logged off in 1 minute. The Server is getting default Windows Server Settings."
+    $sessionNames | ForEach-Object {
+        Write-Output ("Sending notification to user '{0}'." -f $_)
+        msg $_ $message
+    }
+
+    # Wait for 1 minute
+    Start-Sleep -Seconds 60
+
+    $i = 0
+    # Log off users
+    while ($i -ne 15) {
+      logoff $i > $null 2>&1
+      $i++
+    }
+    
     # Create the DefaultSettings registry key.
     Write-Log -Message 'Creating DefaultSettings registry key' -Level 'Information'
     New-Item -Path 'HKLM:\Software\DefaultSettings' -Force
     Write-Log -Message 'Successfully created DefaultSettings registry key' -Level 'Information'
+    shutdown -r -t 60
   }
-  shutdown -r -t 60
 }
 catch {
   Write-Log -Message $_.Exception.Message -Level 'Error'
