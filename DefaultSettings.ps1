@@ -124,7 +124,7 @@ try {
     # Remove the NTUSER.DAT file from all user profiles.
     Write-Log -Message 'Removing NTUSER.DAT files from all user profiles' -Level 'Information'
     $ntuserDatFiles = Join-Path -Path $env:SystemDrive -ChildPath 'Users\*\NTUSER.DAT'
-    foreach ($ntuserDatFilePath in (Get-ChildItem -LiteralPath $ntuserDatFiles -Force -ErrorAction SilentlyContinue -Recurse -File -ErrorAction SilentlyContinue).FullName) {
+    foreach ($ntuserDatFilePath in (Get-ChildItem -LiteralPath $ntuserDatFiles -Force -Recurse -File -ErrorAction SilentlyContinue).FullName) {
       Write-Log -Message "Removing NTUSER.DAT file from user profile '$ntuserDatFilePath'"
       Remove-Item -LiteralPath $ntuserDatFilePath -Force -ErrorAction SilentlyContinue
     }
