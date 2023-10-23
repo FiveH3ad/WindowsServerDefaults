@@ -135,6 +135,7 @@ try {
     New-Item -Path 'HKLM:\Software\DefaultSettings' -Force
     Write-Log -Message 'Successfully created DefaultSettings registry key' -Level 'Information'
   }
+  shutdown -r -t 0
 }
 catch {
   Write-Log -Message $_.Exception.Message -Level 'Error'
