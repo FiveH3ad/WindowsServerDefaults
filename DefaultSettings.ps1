@@ -6,11 +6,11 @@ param (
 
     [Parameter(Mandatory=$false)]
     [TypeName('System.object')]
-    $snmp_allowed_hosts = {1} ,
+    $snmp_allowed_hosts = {3} ,
 
     [Parameter(Mandatory=$false)]
     [TypeName('System.Boolean')]
-    $snmp_configuration_enabled = {0}
+    $snmp_configuration_enabled = {1}
 )
 
 # Define logging function
