@@ -2,19 +2,15 @@
 param (
     [Parameter(Mandatory=$false)]
     [TypeName('System.String')]
-    $CustomerName = $null,
-
-    [Parameter(Mandatory=$false)]
-    [TypeName('System.String')]
-    $snmp_community_string = $null,
+    $snmp_community_string = {2} ,
 
     [Parameter(Mandatory=$false)]
     [TypeName('System.object')]
-    $snmp_allowed_hosts = $null,
+    $snmp_allowed_hosts = {1} ,
 
     [Parameter(Mandatory=$false)]
     [TypeName('System.Boolean')]
-    $snmp_configuration_enabled = $false
+    $snmp_configuration_enabled = {0}
 )
 
 # Define logging function
