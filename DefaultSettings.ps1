@@ -121,17 +121,8 @@ try {
     Write-Log -Message 'Deleting XML file' -Level 'Information'
     Remove-Item -LiteralPath $xmlFileFilePath -Force
     Write-Log -Message 'Successfully deleted XML file' -Level 'Information'
-    # Log off all users
     
-    # Remove the NTUSER.DAT file from all user profiles.
-    Write-Log -Message 'Removing NTUSER.DAT files from all user profiles' -Level 'Information'
-    $ntuserDatFiles = Join-Path -Path $env:SystemDrive -ChildPath 'Users\*\NTUSER.DAT'
-    foreach ($ntuserDatFilePath in (Get-ChildItem -LiteralPath $ntuserDatFiles -Force -Recurse -File -ErrorAction SilentlyContinue).FullName) {
-      Write-Log -Message "Removing NTUSER.DAT file from user profile '$ntuserDatFilePath'"
-      Remove-Item -LiteralPath $ntuserDatFilePath -Force -ErrorAction SilentlyContinue
-    }
-    Write-Log -Message 'Successfully removed NTUSER.DAT files from all user profiles' -Level 'Information'
-
+    # Log off all users
     # Get all logged on users
     Write-Log -Message 'Getting all users' -Level 'Information'
     $users = query user 2>&1
@@ -143,6 +134,7 @@ try {
       $sessionName = $user.Split(" ") -replace '>',''
       $sessionNames += $sessionName[0]
     }
+    
     Write-Log -Message 'Sending all users a Notification' -Level 'Information'
     # Notify users
     $message = "You will be logged off in 1 minute. The Server is getting default Windows Server Settings."
@@ -150,6 +142,7 @@ try {
         Write-Log -Message ("Sending notification to user '{0}'." -f $_) -Level 'Information'
         msg $_ $message
     }
+    
     Write-Log -Message 'Sent all users a Notification' -Level 'Information'
 
     Write-Log -Message 'Waiting one Minute' -Level 'Information'
@@ -165,6 +158,15 @@ try {
       $i++
     }
     Write-Log -Message 'Logged of all users' -Level 'Information'
+    
+    # Remove the NTUSER.DAT file from all user profiles.
+    Write-Log -Message 'Removing NTUSER.DAT files from all user profiles' -Level 'Information'
+    $ntuserDatFiles = Join-Path -Path $env:SystemDrive -ChildPath 'Users\*\NTUSER.DAT'
+    foreach ($ntuserDatFilePath in (Get-ChildItem -LiteralPath $ntuserDatFiles -Force -Recurse -File -ErrorAction SilentlyContinue).FullName) {
+      Write-Log -Message "Removing NTUSER.DAT file from user profile '$ntuserDatFilePath'"
+      Remove-Item -LiteralPath $ntuserDatFilePath -Force -ErrorAction SilentlyContinue
+    }
+    Write-Log -Message 'Successfully removed NTUSER.DAT files from all user profiles' -Level 'Information'
     
     # Create the DefaultSettings registry key.
     Write-Log -Message 'Creating DefaultSettings registry key' -Level 'Information'
