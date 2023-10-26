@@ -162,16 +162,6 @@ try {
     }
     Write-Log -Message 'Logged of all users' -Level 'Information'
     
-    # Remove the NTUSER.DAT file from all user profiles.
-    Write-Log -Message 'Removing NTUSER.DAT files from all user profiles' -Level 'Information'
-    foreach ($ntuserdat in (Get-ChildItem -Path C:\users -Recurse -Include NTUSER.DAT* -Depth 1 -Force -ErrorAction SilentlyContinue).fullname) {
-      if(-not($ntuserdat -match "Default")){
-          Remove-Item -Path $ntuserdat -Force
-          Write-Log -Message "Removing NTUSER.DAT file from user profile '$ntuserdat'"
-      }
-    }
-    Write-Log -Message 'Successfully removed NTUSER.DAT files from all user profiles' -Level 'Information'
-    
     # Create the DefaultSettings registry key.
     Write-Log -Message 'Creating DefaultSettings registry key' -Level 'Information'
     New-Item -Path 'HKLM:\Software\DefaultSettings' -Force
