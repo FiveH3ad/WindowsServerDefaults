@@ -166,7 +166,7 @@ try {
     Write-Log -Message 'Removing NTUSER.DAT files from all user profiles' -Level 'Information'
     foreach ($ntuserdat in (Get-ChildItem -Path C:\users -Recurse -Include NTUSER.DAT* -Depth 1 -Force -ErrorAction SilentlyContinue).fullname) {
       if(-not($ntuserdat -match "Default")){
-          Remove-Item -Path $ntuserdat
+          Remove-Item -Path $ntuserdat -Force
           Write-Log -Message "Removing NTUSER.DAT file from user profile '$ntuserdat'"
       }
     }
