@@ -138,9 +138,9 @@ try {
     Write-Log -Message 'Sending all users a Notification' -Level 'Information'
     # Notify users
     $message = "You will be logged off in 1 minute. The Server is getting default Windows Server Settings."
-    $sessionNames | ForEach-Object {
-        Write-Log -Message ("Sending notification to user '{0}'." -f $_) -Level 'Information'
-        msg $_ $message
+    foreach ($sessionName in $sessionNames) {
+        Write-Log -Message ("Sending notification to user '{0}'." -f $sessionName) -Level 'Information'
+        msg $sessionName $message > $null 2>&1
     }
     
     Write-Log -Message 'Sent all users a Notification' -Level 'Information'
