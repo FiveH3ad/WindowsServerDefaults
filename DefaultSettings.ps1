@@ -134,7 +134,8 @@ try {
       $sessionName = $user.Split(" ") -replace '>',''
       $sessionNames += $sessionName[0]
     }
-    
+
+    Write-Log -Message 'Removing empty Sessions' -Level 'Information'
     $sessionNames = $sessionNames | Where-Object { $_ -ne '' }
 
     Write-Log -Message 'Sending all users a Notification' -Level 'Information'
