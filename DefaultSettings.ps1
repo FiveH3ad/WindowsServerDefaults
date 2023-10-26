@@ -126,15 +126,15 @@ try {
     # Get all logged on users
     Write-Log -Message 'Getting all users' -Level 'Information'
     $users = query user 2>&1
-
+    Write-Log -Message "Following Users are logged in $users" -Level 'Information'
     # Array to store session names (usually usernames for local sessions)
     $sessionNames = @()
     
     Foreach($user in ($users | select -skip 1)){
       $sessionName = $user.Split(" ") -replace '>',''
-      $sessionNames += $sessionName[0]
+      $sessionNames += $sessionName[1]
     }
-
+    Write-Log -Message "got the following SessionNames $sessionNames"
     Write-Log -Message 'Removing empty Sessions' -Level 'Information'
     $sessionNames = $sessionNames | Where-Object { $_ -ne '' }
 
