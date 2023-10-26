@@ -135,6 +135,8 @@ try {
       $sessionNames += $sessionName[0]
     }
     
+    $sessionNames = $sessionNames | Where-Object { $_ -ne '' }
+
     Write-Log -Message 'Sending all users a Notification' -Level 'Information'
     # Notify users
     $message = "You will be logged off in 1 minute. The Server is getting default Windows Server Settings."
